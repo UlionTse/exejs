@@ -52,7 +52,7 @@ setuptools.setup(
     keywords=['JavaScript',],
     install_requires=[],
     python_requires='>=3.8',
-    extras_require={'pypi': ['build>=1.2.2', 'twine>=6.0.1', 'setuptools>=75.3.0']},
+    extras_require={'pypi': ['build>=1.2.2', 'twine>=6.1.0', 'setuptools>=75.3.0']},
     zip_safe=False,
 )
 

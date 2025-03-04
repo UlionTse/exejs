@@ -1,5 +1,6 @@
 ExeJS
 =====
+
 <p align="center">
   <a href="https://pypi.org/project/exejs"><img alt="PyPI - Version" src="https://img.shields.io/pypi/v/exejs.svg?color=blue"></a>
   <a href="https://anaconda.org/conda-forge/exejs"><img alt="Conda - Version" src="https://img.shields.io/conda/vn/conda-forge/exejs.svg?color=blue"></a>
@@ -14,7 +15,6 @@ ExeJS
 
 Run JavaScript code from Python.  
 
-
 - [Supported Runtime](#supported-runtime)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
@@ -22,9 +22,17 @@ Run JavaScript code from Python.
 - [Why](#Why)
 - [Improvement & Change](#Improvement-and-Change)
 
-
 ## Supported Runtime
-Node, JavaScriptCore, SpiderMonkey, Nashorn, JScript, PhantomJS, SlimerJS.
+
+| ID  | Runtime        | Browser Engine | Team      |
+| --- | -------------- | -------------- | --------- |
+| 1   | Node           | Chrome         | Google    |
+| 2   | JavaScriptCore | Safari         | Apple     |
+| 3   | SpiderMonkey   | Firefox        | Mozilla   |
+| 4   | JScript        | IE             | Microsoft |
+| 5   | PhantomJS      | Webkit*        | Apple     |
+| 6   | SlimerJS       | Gecko*         | Mozilla   |
+| 7   | Nashorn        | Java*          | Oracle    |
 
 ## Installation
 
@@ -54,14 +62,16 @@ print(exejs.compile('function add(x, y) { return x+y; }').call('add', 1, 2))
 ```
 
 ## Reference
+
 [PyExecJS (EOL)](https://github.com/doloopwhile/PyExecJS)
 
 ## Why
-1. We need to run javascript by python, but pyexecjs was EOL in 2018. [Issue](https://github.com/UlionTse/translators/issues/91) 
-2. Package builds that rely on pyexecjs will fail or be cancelled. [Issue](https://github.com/NixOS/nixpkgs/issues/353446) 
-3. Because pyexecjs will temporarily write compiled files by default, it will cause antivirus software to issue an alarm and block the program from running. [Issue](https://github.com/UlionTse/translators/issues/168) 
+
+1. We need to run javascript by python, but pyexecjs was EOL in 2018. [Issue#1](https://github.com/UlionTse/translators/issues/91) 
+2. Package builds that rely on pyexecjs will fail or be cancelled. [Issue#2](https://github.com/NixOS/nixpkgs/issues/353446) 
+3. Because pyexecjs will temporarily write compiled files by default, it will cause antivirus software to issue an alarm and block the program from running. [Issue#3](https://github.com/UlionTse/translators/issues/168) 
 
 ## Improvement and Change
-1. [Issue](https://github.com/UlionTse/translators/issues/168#issuecomment-2692367281) Remove the interactive behavior of temporarily writing compiled code locally, and replace it with just-in-time compilation and running.
+
+1. Remove the interactive behavior of temporarily writing compiled code locally, and replace it with just-in-time compilation and running.
 2. Remove support for python2.
-3. Remove support for PyV8. 

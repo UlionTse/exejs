@@ -2,4 +2,8 @@
 create project
 
 0.0.2
+major
+
+0.0.3
+update readme.md
 

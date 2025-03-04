@@ -78,5 +78,5 @@ print(exejs.compile('function add(x, y) { return x+y; }').call('add', 1, 2))
 2. Remove support for python2.
 
 ## Excellent Case
-[ExsJS](https://github.com/UlionTse/exejs) is currently an important dependency library of [Translators](https://github.com/UlionTse/translators).
+[ExeJS](https://github.com/UlionTse/exejs) is currently an important dependency library of [Translators](https://github.com/UlionTse/translators).
 

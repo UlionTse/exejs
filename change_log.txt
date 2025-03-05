@@ -7,3 +7,5 @@ major
 0.0.3
 update readme.md
 
+0.0.4
+add guide message of ExejsRuntimeUnavailableError

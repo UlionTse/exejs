@@ -158,7 +158,9 @@ class Tse:
                 break
 
         if not runtime:
-            raise ExejsRuntimeUnavailableError
+            error_message = 'Unable to find available javascript runtime.'
+            error_message += ' Maybe you can download and install node.js from https://nodejs.org/en/download/'
+            raise ExejsRuntimeUnavailableError(error_message)
         return runtime
 
     def compile(self, source='', cwd=None):

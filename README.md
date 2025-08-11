@@ -74,7 +74,7 @@ print(exejs.compile('function add(x, y) { return x+y; }').call('add', 1, 2))
 
 ## Improvement and Change
 
-1. Remove the interactive behavior of temporarily writing compiled code locally, and replace it with just-in-time compilation and running.
+1. Remove the interactive behavior of temporarily writing compiled code locally (except `JScript`), and replace it with just-in-time compilation and running.
 2. Remove support for python2.
 
 ## Excellent Case

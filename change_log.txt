@@ -9,3 +9,8 @@ update readme.md
 
 0.0.4
 add guide message of ExejsRuntimeUnavailableError
+
+0.0.6
+fix runtime of `JScript`
+fix subprocess: UnicodeDecodeError: 'gbk' codec can't decode
+add function `reset_runtime`, `find_all_runtime_name_list`

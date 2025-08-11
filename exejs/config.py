@@ -176,6 +176,10 @@ class ExejsError(Exception):
     pass
 
 
+class ExejsRuntimeNameError(Exception):
+    pass
+
+
 class ExejsRuntimeUnavailableError(Exception):
     pass
 

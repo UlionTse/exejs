@@ -1,18 +1,19 @@
 # coding=utf-8
 # author=uliontse
 
+import asyncio
+import json
 import os
+import platform
 import re
 import stat
-import json
-import tempfile
-import platform
 import subprocess
+import tempfile
 
-from exejs.config import Json2_Source, Node_Source, JavaScriptCore_Source, SpiderMonkey_Source
-from exejs.config import JScript_Source, PhantomJS_Source, Nashorn_Source, SlimerJS_Source
 from exejs.config import ExejsProgramError, ExejsProcessExitError
 from exejs.config import ExejsRuntimeNameError, ExejsRuntimeUnavailableError
+from exejs.config import JScript_Source, PhantomJS_Source, Nashorn_Source, SlimerJS_Source
+from exejs.config import Json2_Source, Node_Source, JavaScriptCore_Source, SpiderMonkey_Source
 
 
 class Runtime:
@@ -76,6 +77,28 @@ class RuntimeCompileContext:
             raise ExejsProcessExitError(str(e))
         return data
 
+    async def _execute_async(self, source):
+        src = self._compile(source)
+        cmd = self.runtime.cmd_app
+        try:
+            # Create the subprocess asynchronously
+            process = await asyncio.create_subprocess_exec(
+                *cmd,
+                stdin=asyncio.subprocess.PIPE,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+                cwd=self.cwd
+            )
+            # Communicate with the process (send input, get output)
+            stdout, stderr = await process.communicate(input=src.encode('utf-8'))
+
+            if process.returncode != 0:
+                raise ExejsProcessExitError(stderr.decode('utf-8'))
+            data = stdout.decode('utf-8')
+        except Exception as e:
+            raise ExejsProcessExitError(str(e))
+        return data
+
     def _execute_with_tempfile(self, source):
         src = self._compile(source)
         cmd = self.runtime.cmd_app
@@ -91,6 +114,37 @@ class RuntimeCompileContext:
             raise ExejsProcessExitError(str(e))
         finally:
             os.remove(t_file)
+        return data
+
+    async def _execute_with_tempfile_async(self, source):
+        src = self._compile(source)
+        cmd = self.runtime.cmd_app
+        fd, t_file = tempfile.mkstemp(prefix='exejs_temp_', suffix='.js', text=False)
+        os.close(fd)
+        try:
+            # File writing remains sync (usually fast enough), execution is async
+            with open(t_file, 'w+', encoding='utf-8') as f:
+                f.write(src)
+
+            new_cmd = cmd + [t_file]
+
+            process = await asyncio.create_subprocess_exec(
+                *new_cmd,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+                cwd=self.cwd
+            )
+            stdout, stderr = await process.communicate()
+
+            if process.returncode != 0:
+                raise ExejsProcessExitError(stderr.decode('utf-8'))
+            data = stdout.decode('utf-8')
+
+        except Exception as e:
+            raise ExejsProcessExitError(str(e))
+        finally:
+            if os.path.exists(t_file):
+                os.remove(t_file)
         return data
 
     def _extract(self, outputs):
@@ -121,6 +175,25 @@ class RuntimeCompileContext:
     def call(self, key, *args):
         args = json.dumps(args)
         return self.evaluate('{key}.apply(this, {args})'.format(key=key, args=args))
+
+    async def execute_async(self, source):
+        source = '{}\n{}'.format(self.source, source) if self.source else source
+        if self.runtime.name == 'JScript':
+            outputs = await self._execute_with_tempfile_async(source)
+        else:
+            outputs = await self._execute_async(source)
+        outputs = self._extract(outputs)
+        return outputs
+
+    async def evaluate_async(self, source):
+        data = "'('+" + json.dumps(source, ensure_ascii=True) + "+')'" if source.strip() else "''"
+        code = 'return eval({})'.format(data)
+        outputs = await self.execute_async(code)
+        return outputs
+
+    async def call_async(self, key, *args):
+        args = json.dumps(args)
+        return await self.evaluate_async('{key}.apply(this, {args})'.format(key=key, args=args))
 
 
 class Tse:
@@ -185,13 +258,19 @@ class Tse:
     def evaluate(self, source):
         return self.compile().evaluate(source)
 
+    async def execute_async(self, source):
+        return await self.compile().execute_async(source)
+
+    async def evaluate_async(self, source):
+        return await self.compile().evaluate_async(source)
 
 tse = Tse()
 compile = tse.compile
 execute = tse.execute
 evaluate = tse.evaluate
+execute_async = tse.execute_async
+evaluate_async = tse.evaluate_async
 reset_runtime = tse.reset_runtime
 find_all_runtime_name_list = tse.find_all_runtime_name_list
 get_current_runtime = tse.get_current_runtime
 get_current_runtime_name = tse.get_current_runtime_name
-

@@ -24,6 +24,6 @@
 
 ## Version 0.0.7
 
-- Added `evaluate_async` and `execute_async` methods (#2)
+- Added `evaluate_async` and `execute_async` methods ([#2](https://github.com/UlionTse/exejs/pull/2))
   
 - Added guidance message for `ExejsProgramError`

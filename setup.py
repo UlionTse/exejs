@@ -13,7 +13,8 @@ AUTHOR_EMAIL = 'uliontse@outlook.com'
 HOMEPAGE_URL = 'https://github.com/uliontse/exejs'
 DESCRIPTION = 'Run JavaScript code from Python.'
 LONG_DESCRIPTION = pathlib.Path('README.md').read_text(encoding='utf-8')
-VERSION = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', pathlib.Path('exejs/__init__.py').read_text(), re.M).group(1)
+pattern = r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]'
+VERSION = re.search(pattern, pathlib.Path('exejs/__init__.py').read_text(), re.M).group(1)
 
 
 setuptools.setup(
@@ -31,11 +32,11 @@ setuptools.setup(
     url=HOMEPAGE_URL,
     project_urls={
         'Source': 'https://github.com/UlionTse/exejs',
-        'Changelog': 'https://github.com/UlionTse/exejs/blob/main/change_log.txt',
+        'Changelog': 'https://github.com/UlionTse/exejs/blob/main/change_log.md',
         'Documentation': 'https://github.com/UlionTse/exejs/blob/main/README.md',
     },
     classifiers=[
-        "Development Status :: 5 - Production/Stable",
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python :: 3 :: Only',
@@ -44,12 +45,15 @@ setuptools.setup(
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
         'Programming Language :: JavaScript',
         'Topic :: Software Development',
         'Topic :: Software Development :: Libraries',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
-    keywords=['JavaScript',],
+    keywords=[
+        'JavaScript',
+    ],
     install_requires=[],
     python_requires='>=3.8',
     extras_require={'pypi': ['build>=1.2.2', 'twine>=6.1.0', 'setuptools>=75.3.0']},

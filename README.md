@@ -76,6 +76,7 @@ print(exejs.compile('function add(x, y) { return x+y; }').call('add', 1, 2))
 
 1. Remove the interactive behavior of temporarily writing compiled code locally (except `JScript`), and replace it with just-in-time compilation and running.
 2. Remove support for python2.
+3. Support async.
 
 ## Excellent Case
 [ExeJS](https://github.com/UlionTse/exejs) is currently an important dependency library of [Translators](https://github.com/UlionTse/translators).

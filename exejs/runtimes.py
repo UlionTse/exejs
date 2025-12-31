@@ -1,14 +1,14 @@
 # coding=utf-8
 # author=uliontse
 
-import asyncio
-import json
 import os
-import platform
 import re
 import stat
-import subprocess
+import json
+import asyncio
 import tempfile
+import platform
+import subprocess
 
 from exejs.config import ExejsProgramError, ExejsProcessExitError
 from exejs.config import ExejsRuntimeNameError, ExejsRuntimeUnavailableError
@@ -105,7 +105,7 @@ class RuntimeCompileContext:
         fd, t_file = tempfile.mkstemp(prefix='exejs_temp_', suffix='.js', text=False)
         os.close(fd)
         try:
-            with open(t_file, 'w+', encoding='utf-8') as f:
+            with open(file=t_file, mode='w+', encoding='utf-8') as f:
                 f.write(src)
 
             new_cmd = cmd + [t_file]
@@ -123,7 +123,7 @@ class RuntimeCompileContext:
         os.close(fd)
         try:
             # File writing remains sync (usually fast enough), execution is async
-            with open(t_file, 'w+', encoding='utf-8') as f:
+            with open(file=t_file, mode='w+', encoding='utf-8') as f:
                 f.write(src)
 
             new_cmd = cmd + [t_file]
@@ -157,7 +157,7 @@ class RuntimeCompileContext:
 
         status, value = data
         if status != 'ok':
-            raise ExejsProgramError
+            raise ExejsProgramError('Extract failed. Javascript code may contain undefined variables or functions.')
         return value
 
     def execute(self, source):
@@ -264,6 +264,7 @@ class Tse:
     async def evaluate_async(self, source):
         return await self.compile().evaluate_async(source)
 
+
 tse = Tse()
 compile = tse.compile
 execute = tse.execute
@@ -271,6 +272,6 @@ evaluate = tse.evaluate
 execute_async = tse.execute_async
 evaluate_async = tse.evaluate_async
 reset_runtime = tse.reset_runtime
-find_all_runtime_name_list = tse.find_all_runtime_name_list
 get_current_runtime = tse.get_current_runtime
 get_current_runtime_name = tse.get_current_runtime_name
+find_all_runtime_name_list = tse.find_all_runtime_name_list

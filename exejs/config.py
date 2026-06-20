@@ -2,10 +2,8 @@
 # author=uliontse
 
 
-RuntimeList = ['Node', 'JavaScriptCore', 'SpiderMonkey', 'JScript', 'PhantomJS', 'SlimerJS', 'Nashorn']
-
 # JSON.stringify & JSON.parse
-# The folowing code is json2.js(https://github.com/douglascrockford/JSON-js).
+# The following code is json2.js(https://github.com/douglascrockford/JSON-js).
 # It is compressed by YUI Compressor Online(http://yui.2clics.net/).
 Json2_Source = (
     'var JSON;if(!JSON){JSON={}}(function(){function f(n){return n<10?"0"+n:n}if(typeof Date.prototype.'
@@ -48,14 +46,13 @@ Json2_Source = (
 
 Node_Source = r"""(function(program, exejs) { exejs(program) })(function() { #{source}
 }, function(program) {
-  var output;
   var print = function(string) {
     process.stdout.write('' + string + '\n');
   };
   try {
-    result = program();
+    var result = program();
     print('')
-    if (typeof result == 'undefined' && result !== null) {
+    if (typeof result == 'undefined') {
       print('["ok"]');
     } else {
       try {
@@ -72,11 +69,10 @@ Node_Source = r"""(function(program, exejs) { exejs(program) })(function() { #{s
 JavaScriptCore_Source = r"""(function(program, exejs) { exejs(program) })(function() {
   return eval(#{encoded_source});
 }, function(program) {
-  var output;
   try {
-    result = program();
+    var result = program();
     print("");
-    if (typeof result == 'undefined' && result !== null) {
+    if (typeof result == 'undefined') {
       print('["ok"]');
     } else {
       try {
@@ -94,11 +90,10 @@ JavaScriptCore_Source = r"""(function(program, exejs) { exejs(program) })(functi
 SpiderMonkey_Source = r"""(function(program, exejs) { exejs(program) })(function() { #{source}
 }, function(program) {
   #{json2_source}
-  var output;
   try {
-    result = program();
+    var result = program();
     print("");
-    if (typeof result == 'undefined' && result !== null) {
+    if (typeof result == 'undefined') {
       print('["ok"]');
     } else {
       try {
@@ -117,16 +112,16 @@ JScript_Source = r"""(function(program, exejs) { exejs(program) })(function() {
   return eval(#{encoded_source});
 }, function(program) {
   #{json2_source}
-  var output, print = function(string) {
+  var print = function(string) {
     string = string.replace(/[^\x00-\x7f]/g, function(ch){
       return '\\u' + ('0000' + ch.charCodeAt(0).toString(16)).slice(-4);
     });
     WScript.Echo(string);
   };
   try {
-    result = program();
+    var result = program();
     print("")
-    if (typeof result == 'undefined' && result !== null) {
+    if (typeof result == 'undefined') {
       print('["ok"]');
     } else {
       try {
@@ -145,14 +140,13 @@ PhantomJS_Source = r"""
 (function(program, exejs) { exejs(program) })(function() {
   return eval(#{encoded_source});
 }, function(program) {
-  var output;
   var print = function(string) {
     console.log('' + string);
   };
   try {
-    result = program();
+    var result = program();
     print('')
-    if (typeof result == 'undefined' && result !== null) {
+    if (typeof result == 'undefined') {
       print('["ok"]');
     } else {
       try {
@@ -176,18 +170,22 @@ class ExejsError(Exception):
     pass
 
 
-class ExejsRuntimeNameError(Exception):
+class ExejsRuntimeNameError(ExejsError):
     pass
 
 
-class ExejsRuntimeUnavailableError(Exception):
+class ExejsRuntimeUnavailableError(ExejsError):
     pass
 
 
-class ExejsProcessExitError(Exception):
+class ExejsProcessExitError(ExejsError):
     pass
 
 
-class ExejsProgramError(Exception):
+class ExejsProgramError(ExejsError):
+    pass
+
+
+class ExejsTimeoutError(ExejsError):
     pass
 

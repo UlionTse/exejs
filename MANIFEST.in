@@ -1,5 +1,5 @@
 include *.md
 include *.txt
 include LICENSE
-include MANIFEST
+include exejs/py.typed
 recursive-include exejs *.py

@@ -1,6 +1,55 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools>=82.0.1"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "exejs"
+dynamic = ["version"]
+description = "Run JavaScript code from Python."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.9"
+authors = [{name = "UlionTse", email = "uliontse@outlook.com"}]
+keywords = ["JavaScript"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: JavaScript",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = []
+
+[project.optional-dependencies]
+pypi = ["build>=1.5.0", "twine>=6.2.0"]
+
+[project.urls]
+Source = "https://github.com/UlionTse/exejs"
+Changelog = "https://github.com/UlionTse/exejs/blob/main/change_log.md"
+Documentation = "https://github.com/UlionTse/exejs/blob/main/README.md"
+
+[tool.setuptools]
+package-dir = {exejs = "exejs"}
+include-package-data = false
+zip-safe = false
+
+[tool.setuptools.dynamic]
+version = {attr = "exejs.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["."]
+namespaces = false
+
+[tool.setuptools.package-data]
+exejs = ["py.typed"]
 
 [tool.isort]
 src_paths = ["exejs"]

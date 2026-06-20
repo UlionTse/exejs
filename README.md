@@ -18,10 +18,10 @@ Run JavaScript code from Python.
 - [Supported Runtime](#supported-runtime)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
-- [Reference](#Reference)
-- [Why](#Why)
-- [Improvement & Change](#Improvement-and-Change)
-- [Excellent Case](#Excellent-Case)
+- [Reference](#reference)
+- [Why](#why)
+- [Improvement & Change](#improvement-and-change)
+- [Notable Usage](#notable-usage)
 
 ## Supported Runtime
 
@@ -47,19 +47,43 @@ conda install conda-forge::exejs
 # Source
 git clone https://github.com/UlionTse/exejs.git
 cd exejs
-python setup.py install
+pip install .
 ```
 
 ## Getting Started
 
 ```python
+import asyncio
 import exejs
 
-# evaluate:
+# evaluate (one-shot expression):
 print(exejs.evaluate("'red yellow blue'.split(' ')"))
+# ['red', 'yellow', 'blue']
 
-# call:
-print(exejs.compile('function add(x, y) { return x+y; }').call('add', 1, 2))
+# execute (one-shot statements; use `return` to send a value back):
+print(exejs.execute('var x = 40 + 2; return x;'))
+# 42
+
+# compile + call (reuse a JS context across multiple calls):
+ctx = exejs.compile('function add(x, y) { return x + y; }')
+print(ctx.call('add', 1, 2))   # 3
+
+# call an object method (key may be a property path):
+ctx = exejs.compile('var calc = { mul: function(a, b) { return a * b; } };')
+print(ctx.call('calc.mul', 3, 4))  # 12
+
+# call with structured arguments (auto JSON-serialized):
+ctx = exejs.compile('function greet(u) { return "hi " + u.name + ", age " + u.age; }')
+print(ctx.call('greet', {'name': 'Tom', 'age': 18}))  # hi Tom, age 18
+
+# async evaluate:
+print(asyncio.run(exejs.evaluate_async("'red yellow blue'.split(' ')")))
+
+# timeout (kill a runaway script instead of hanging forever):
+try:
+    exejs.execute('while (true) {}', timeout=2.0)
+except exejs.ExejsTimeoutError as e:
+    print('killed:', str(e))
 ```
 
 ## Reference
@@ -68,16 +92,15 @@ print(exejs.compile('function add(x, y) { return x+y; }').call('add', 1, 2))
 
 ## Why
 
-1. We need to run javascript by python, but pyexecjs was EOL in 2018. [Issue#1](https://github.com/UlionTse/translators/issues/91) 
-2. Package builds that rely on pyexecjs will fail or be cancelled. [Issue#2](https://github.com/NixOS/nixpkgs/issues/353446) 
-3. Because pyexecjs will temporarily write compiled files by default, it will cause antivirus software to issue an alarm and block the program from running. [Issue#3](https://github.com/UlionTse/translators/issues/168) 
+1. We need to run JavaScript from Python, but PyExecJS has been EOL since 2018. [Issue#1](https://github.com/UlionTse/translators/issues/91) 
+2. Package builds that rely on PyExecJS fail or get cancelled. [Issue#2](https://github.com/NixOS/nixpkgs/issues/353446) 
+3. PyExecJS writes compiled code to a temp file by default, which triggers antivirus alerts and blocks execution. [Issue#3](https://github.com/UlionTse/translators/issues/168) 
 
 ## Improvement and Change
 
-1. Remove the interactive behavior of temporarily writing compiled code locally (except `JScript`), and replace it with just-in-time compilation and running.
-2. Remove support for python2.
-3. Support async.
+1. Stop writing compiled code to a temp file (except `JScript`); compile and run just-in-time via stdin.
+2. Drop Python 2 support.
+3. Add an async API.
 
-## Excellent Case
-[ExeJS](https://github.com/UlionTse/exejs) is currently an important dependency library of [Translators](https://github.com/UlionTse/translators).
-
+## Notable Usage
+[ExeJS](https://github.com/UlionTse/exejs) is a core dependency of [Translators](https://github.com/UlionTse/translators), where it handles the JavaScript execution layer that translation engines rely on.

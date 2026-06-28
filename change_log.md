@@ -1,3 +1,6 @@
+## Version 1.0.1
+- Updated `README.md` documentation
+
 ## Version 1.0.0
 - Lazy runtime detection (deferred from import to first use)
 - Stability fixes and JS template cleanup

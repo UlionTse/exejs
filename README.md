@@ -2,15 +2,6 @@
 
 <img src="docs/logo.svg" width="380" alt="ExeJS">
 
-```text
-███████╗██╗  ██╗███████╗     ██╗███████╗
-██╔════╝╚██╗██╔╝██╔════╝     ██║██╔════╝
-█████╗   ╚███╔╝ █████╗       ██║███████╗
-██╔══╝   ██╔██╗ ██╔══╝  ██   ██║╚════██║
-███████╗██╔╝ ██╗███████╗╚█████╔╝███████║
-╚══════╝╚═╝  ╚═╝╚══════╝ ╚════╝ ╚══════╝
-```
-
 **Run JavaScript from Python — the modern successor to PyExecJS.**
 
 Zero dependencies · Multi-runtime auto-detection · Async-ready · No temp files · Timeout guard

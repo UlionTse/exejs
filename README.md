@@ -1,6 +1,15 @@
 <div align="center">
 
-# ExeJS
+<img src="docs/logo.svg" width="380" alt="ExeJS">
+
+```text
+███████╗██╗  ██╗███████╗     ██╗███████╗
+██╔════╝╚██╗██╔╝██╔════╝     ██║██╔════╝
+█████╗   ╚███╔╝ █████╗       ██║███████╗
+██╔══╝   ██╔██╗ ██╔══╝  ██   ██║╚════██║
+███████╗██╔╝ ██╗███████╗╚█████╔╝███████║
+╚══════╝╚═╝  ╚═╝╚══════╝ ╚════╝ ╚══════╝
+```
 
 **Run JavaScript from Python — the modern successor to PyExecJS.**
 
@@ -108,16 +117,16 @@ For context reuse, structured args, async, and timeout, see [Advanced](#advanced
 
 ## Supported Runtimes
 
-| Runtime | Command | Install / Notes |
-|---|---|---|
-| Node | `node` | recommended, all platforms — [nodejs.org/download](https://nodejs.org/en/download) |
-| NodeJS | `nodejs` | Debian/Ubuntu alias of Node |
-| JavaScriptCore | `jsc` | macOS only (bundled) |
-| SpiderMonkey | `js` | `js` package on most Linux distros |
-| Phantomjs | `phantomjs` | WebKit-based; upstream abandoned 2018 |
-| SlimerJS | `slimerjs` | Gecko-based; upstream abandoned 2021 |
-| Nashorn | `jjs` | Oracle JDK; removed since JDK 15 |
-| JScript | `cscript //E:jscript //Nologo` | Windows only (built-in); uses temp file |
+| Runtime | Command | Engine | Install / Notes |
+|---|---|---|---|
+| Node | `node` | Chrome (V8) | recommended, all platforms — [nodejs.org/download](https://nodejs.org/en/download) |
+| NodeJS | `nodejs` | Chrome (V8) | Debian/Ubuntu alias of Node |
+| JavaScriptCore | `jsc` | Safari (WebKit) | macOS only (bundled) |
+| SpiderMonkey | `js` | Firefox (Gecko) | `js` package on most Linux distros |
+| Phantomjs | `phantomjs` | WebKit | upstream abandoned 2018 |
+| SlimerJS | `slimerjs` | Gecko | upstream abandoned 2021 |
+| Nashorn | `jjs` | Java (JVM) | Oracle JDK; removed since JDK 15 |
+| JScript | `cscript //E:jscript //Nologo` | IE (Trident) | Windows only (built-in); uses temp file |
 
 ExeJS auto-detects the first available runtime in the order above. Use `reset_runtime` to pick one explicitly.
 

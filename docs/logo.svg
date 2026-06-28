@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 150" text-rendering="geometricPrecision" role="img" aria-labelledby="logoTitle logoDesc">
+  <title id="logoTitle">ExeJS</title>
+  <desc id="logoDesc">ExeJS — run JavaScript from Python. Logo: a terminal window with the prompt "$ exejs".</desc>
+  <rect width="520" height="150" rx="16" fill="#1e1e2e"/>
+  <circle cx="24" cy="24" r="6" fill="#ff5f56"/>
+  <circle cx="46" cy="24" r="6" fill="#ffbd2e"/>
+  <circle cx="68" cy="24" r="6" fill="#27c93f"/>
+  <text x="34" y="108" font-family="ui-monospace,'Cascadia Code','JetBrains Mono',Consolas,monospace" font-size="50" font-weight="700">
+    <tspan fill="#27c93f">$</tspan><tspan fill="#e4e4e7"> exe</tspan><tspan fill="#f7df1e">js</tspan><tspan fill="#e4e4e7">&#9612;</tspan>
+  </text>
+</svg>
